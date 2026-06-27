@@ -1,0 +1,965 @@
+my web page
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinApp Studio — Financial Software, Built for Ethiopia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Manrope', 'sans-serif'] },
+          colors: {
+            accent: '#64906E',
+            'accent-deep': '#4a6e50',
+            'accent-dark': '#243629',
+            'accent-light': '#e8f0ea',
+            ink: '#1B2620',
+            paper: '#F4F4F5',
+            seal: '#A4243B',
+            brass: '#9A7B33',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Manrope', sans-serif; background: #F4F4F5; color: #171717; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.035;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+    .anim-in { opacity: 0; animation: fadeInUp 0.9s cubic-bezier(0.2,0.8,0.2,1) forwards; }
+    .d1 { animation-delay: 80ms; }
+    .d2 { animation-delay: 160ms; }
+    .d3 { animation-delay: 240ms; }
+    .d4 { animation-delay: 320ms; }
+    .d5 { animation-delay: 400ms; }
+    .d6 { animation-delay: 480ms; }
+    .d7 { animation-delay: 560ms; }
+    .d8 { animation-delay: 640ms; }
+
+    @keyframes slowFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .float { animation: slowFloat 7s ease-in-out infinite; }
+    .float-delayed { animation: slowFloat 8s ease-in-out 2s infinite; }
+
+    @keyframes float-bokeh-1 {
+      0%, 100% { transform: translate(0,0) scale(1); opacity: 0.3; }
+      25% { transform: translate(60px, -40px) scale(1.2); opacity: 0.5; }
+      50% { transform: translate(-30px, -80px) scale(0.9); opacity: 0.4; }
+      75% { transform: translate(-60px, 20px) scale(1.1); opacity: 0.35; }
+    }
+    @keyframes float-bokeh-2 {
+      0%, 100% { transform: translate(0,0) scale(1); opacity: 0.2; }
+      33% { transform: translate(-50px, 50px) scale(1.3); opacity: 0.4; }
+      66% { transform: translate(40px, -30px) scale(0.85); opacity: 0.25; }
+    }
+    @keyframes float-bokeh-3 {
+      0%, 100% { transform: translate(0,0) scale(1); opacity: 0.2; }
+      50% { transform: translate(70px, 30px) scale(1.15); opacity: 0.35; }
+    }
+
+    @keyframes settle {
+      0% { transform: rotate(6deg); }
+      18% { transform: rotate(-4deg); }
+      36% { transform: rotate(2.5deg); }
+      54% { transform: rotate(-1deg); }
+      72%, 100% { transform: rotate(0deg); }
+    }
+
+    @keyframes scroll-marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track { animation: scroll-marquee 50s linear infinite; }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .glass-card {
+      background: linear-gradient(to bottom right, rgba(255,255,255,0.6), rgba(255,255,255,0.4), rgba(255,255,255,0.2));
+      backdrop-filter: blur(64px) saturate(2);
+      -webkit-backdrop-filter: blur(64px) saturate(2);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1), inset 0 0 30px rgba(255,255,255,0.7);
+      border: 1px solid rgba(229,229,229,0.5);
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, #243629 0%, #64906E 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-glass {
+      backdrop-filter: blur(14px) saturate(1.8);
+      -webkit-backdrop-filter: blur(14px) saturate(1.8);
+      background: rgba(255,255,255,0.78);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .product-card {
+      transition: all 500ms cubic-bezier(0.2,0.8,0.2,1);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.02);
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 40px 80px -20px rgba(0,0,0,0.15), 0 0 0 1px rgba(100,144,110,0.2);
+    }
+
+    .feature-row {
+      transition: all 300ms ease;
+    }
+    .feature-row:hover {
+      background: rgba(255,255,255,0.8);
+    }
+
+    .tag {
+      background: rgba(100,144,110,0.1);
+      color: #4a6e50;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .tag-brass {
+      background: rgba(154,123,51,0.1);
+      color: #9A7B33;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .section-hidden { opacity: 0; transform: translateY(24px); }
+    .section-visible { opacity: 1; transform: translateY(0); transition: all 0.8s cubic-bezier(0.2,0.8,0.2,1); }
+
+    .mono { font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+    .beam-arm {
+      width: 120px; height: 4px;
+      background: #64906E;
+      border-radius: 3px;
+      transform-origin: center;
+      animation: settle 5s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .beam-arm, .float, .float-delayed, .marquee-track { animation: none; }
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #a3a3a3; }
+
+    .edition-card {
+      transition: all 400ms cubic-bezier(0.2,0.8,0.2,1);
+    }
+    .edition-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.12);
+    }
+
+    .ledger-line {
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .ledger-line:hover {
+      background: rgba(255,255,255,0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav-glass fixed top-0 left-0 right-0 z-50">
+    <div class="max-w-[1500px] mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5 group" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
+        <div class="w-8 h-8 rounded-lg bg-accent-dark flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="font-bold tracking-tight text-neutral-900 text-[15px]">FinApp Studio</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#products" class="text-[13px] font-medium text-neutral-500 hover:text-neutral-900 transition-colors duration-200">Products</a>
+        <a href="#mercato" class="text-[13px] font-medium text-neutral-500 hover:text-neutral-900 transition-colors duration-200">Mercato</a>
+        <a href="#ledger" class="text-[13px] font-medium text-neutral-500 hover:text-neutral-900 transition-colors duration-200">Ledger</a>
+        <a href="#why" class="text-[13px] font-medium text-neutral-500 hover:text-neutral-900 transition-colors duration-200">Why Us</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#contact" class="hidden md:inline-flex items-center gap-2 bg-accent-dark hover:bg-accent text-white text-[13px] font-semibold px-5 py-2.5 rounded-xl transition-all duration-300 hover:scale-[1.03]">
+          Get a Demo
+        </a>
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg hover:bg-black/5 transition-colors">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden border-t border-black/5 bg-white/95 backdrop-blur-xl">
+      <div class="px-4 py-4 flex flex-col gap-1">
+        <a href="#products" onclick="closeMobileMenu()" class="text-sm font-medium text-neutral-500 hover:text-neutral-900 py-2.5 px-2 rounded-lg hover:bg-black/5 transition-colors">Products</a>
+        <a href="#mercato" onclick="closeMobileMenu()" class="text-sm font-medium text-neutral-500 hover:text-neutral-900 py-2.5 px-2 rounded-lg hover:bg-black/5 transition-colors">Mercato</a>
+        <a href="#ledger" onclick="closeMobileMenu()" class="text-sm font-medium text-neutral-500 hover:text-neutral-900 py-2.5 px-2 rounded-lg hover:bg-black/5 transition-colors">Ledger</a>
+        <a href="#why" onclick="closeMobileMenu()" class="text-sm font-medium text-neutral-500 hover:text-neutral-900 py-2.5 px-2 rounded-lg hover:bg-black/5 transition-colors">Why Us</a>
+        <a href="#contact" onclick="closeMobileMenu()" class="mt-2 flex items-center justify-center gap-2 bg-accent-dark text-white text-sm font-semibold px-5 py-2.5 rounded-xl">Get a Demo</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ==================== HERO ==================== -->
+    <section class="relative min-h-[92vh] flex items-center overflow-hidden pt-16">
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-[12%] left-[8%] w-[420px] h-[420px] rounded-full" style="background: rgba(134,239,172,0.2); filter: blur(110px); animation: float-bokeh-1 26s ease-in-out infinite;"></div>
+        <div class="absolute top-[35%] right-[12%] w-[360px] h-[360px] rounded-full" style="background: rgba(253,224,71,0.12); filter: blur(95px); animation: float-bokeh-2 32s ease-in-out infinite;"></div>
+        <div class="absolute bottom-[8%] left-[38%] w-[320px] h-[320px] rounded-full" style="background: rgba(74,222,128,0.12); filter: blur(85px); animation: float-bokeh-3 24s ease-in-out infinite;"></div>
+        <div class="absolute top-[55%] left-[3%] w-[200px] h-[200px] rounded-full" style="background: rgba(254,240,138,0.12); filter: blur(65px); animation: float-bokeh-1 30s ease-in-out infinite reverse;"></div>
+      </div>
+
+      <div class="relative max-w-[1500px] mx-auto px-4 md:px-8 w-full py-16 md:py-20">
+        <div class="max-w-3xl">
+          <div class="anim-in d1 flex items-center gap-2.5 mb-6">
+            <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+            <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-neutral-500">Financial Software · Built in Ethiopia</span>
+          </div>
+          <h1 class="anim-in d2 text-[clamp(3rem,7vw,5.5rem)] font-medium leading-[0.92] tracking-[-0.04em] mb-8">
+            <span class="text-gradient">Financial tools</span><br>
+            <span class="text-neutral-900">that work</span>
+            <span class="text-neutral-300"> the way</span><br>
+            <span class="text-neutral-400">Ethiopia works</span>
+          </h1>
+          <p class="anim-in d3 text-lg md:text-xl text-neutral-500 leading-relaxed max-w-xl mb-10" style="text-wrap: balance; letter-spacing: 0.01em;">
+            Purpose-built accounting, payroll, and tax software for Ethiopian businesses and NGOs. No workarounds, no foreign defaults — just software that knows the birr, the calendar, and the law.
+          </p>
+          <div class="anim-in d4 flex flex-wrap gap-4">
+            <a href="#products" class="inline-flex items-center gap-2.5 bg-accent-dark hover:bg-accent text-white font-semibold px-7 py-3.5 rounded-2xl transition-all duration-300 hover:scale-[1.03] shadow-lg shadow-accent-dark/20">
+              Explore Products
+              <i data-lucide="arrow-down" class="w-4 h-4"></i>
+            </a>
+            <a href="#contact" class="inline-flex items-center gap-2.5 bg-white/80 hover:bg-white text-neutral-700 font-medium px-7 py-3.5 rounded-2xl transition-all duration-300 hover:scale-[1.03] border border-black/[0.06]">
+              <i data-lucide="play-circle" class="w-4 h-4 text-accent"></i>
+              Request a Demo
+            </a>
+          </div>
+        </div>
+
+        <!-- Floating balance card -->
+        <div class="hidden lg:block absolute right-8 xl:right-16 top-1/2 -translate-y-1/2 float">
+          <div class="glass-card rounded-2xl p-5 w-[300px]">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[10px] font-bold tracking-[0.12em] uppercase text-neutral-400 mono">Trial Balance</span>
+              <span class="text-[10px] font-bold tracking-[0.08em] uppercase text-accent mono">ETB</span>
+            </div>
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <div class="text-[10px] font-semibold tracking-[0.1em] uppercase text-neutral-400 mb-1">Debits</div>
+                <div class="text-xl font-bold tracking-tight mono text-neutral-800">28,625,957</div>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="beam-arm"></div>
+                <div class="mt-1.5 w-0 h-0 border-l-[7px] border-r-[7px] border-b-[12px] border-transparent border-b-neutral-800"></div>
+                <span class="text-[9px] font-bold tracking-[0.15em] text-accent mt-1.5 mono">BALANCED</span>
+              </div>
+              <div class="text-right">
+                <div class="text-[10px] font-semibold tracking-[0.1em] uppercase text-neutral-400 mb-1">Credits</div>
+                <div class="text-xl font-bold tracking-tight mono text-neutral-800">28,625,957</div>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-dashed border-neutral-300/60 flex items-center justify-between">
+              <span class="text-[11px] text-neutral-400">Dr = Cr, always</span>
+              <span class="text-[11px] text-neutral-400 mono">.25</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MARQUEE ==================== -->
+    <section class="py-6 border-y border-black/5 overflow-hidden bg-white/30">
+      <div class="marquee-track flex items-center gap-8 whitespace-nowrap" style="width: max-content;">
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Double-Entry Accounting</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Ethiopian VAT</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">PAYE Payroll</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Point of Sale</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Donor Reporting</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Ethiopian Calendar</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Telebirr Payments</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Offline-First PWA</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">IFRS Aligned</span>
+        <span class="text-accent/40">◆</span>
+        <!-- Duplicate -->
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Double-Entry Accounting</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Ethiopian VAT</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">PAYE Payroll</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Point of Sale</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Donor Reporting</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Ethiopian Calendar</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Telebirr Payments</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">Offline-First PWA</span>
+        <span class="text-accent/40">◆</span>
+        <span class="text-[13px] font-medium text-neutral-300 tracking-wider uppercase">IFRS Aligned</span>
+        <span class="text-accent/40">◆</span>
+      </div>
+    </section>
+
+    <!-- ==================== PRODUCTS OVERVIEW ==================== -->
+    <section id="products" class="py-20 md:py-28 section-hidden">
+      <div class="max-w-[1500px] mx-auto px-4 md:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-[11px] font-bold tracking-[0.15em] uppercase text-brass mb-4 block">Our Products</span>
+          <h2 class="text-3xl md:text-[2.75rem] font-semibold tracking-[-0.025em] leading-tight">Two platforms, one mission:<br><span class="text-gradient">financial clarity for Ethiopia</span></h2>
+          <p class="text-neutral-500 mt-5 text-lg leading-relaxed">Purpose-built for the businesses and organisations that operate here — not adapted from somewhere else.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Mercato Card -->
+          <div class="product-card bg-white rounded-2xl overflow-hidden border border-black/[0.04] cursor-pointer group" onclick="document.getElementById('mercato').scrollIntoView({behavior:'smooth'})">
+            <div class="h-56 overflow-hidden relative bg-gradient-to-br from-accent-dark to-accent-deep flex items-center justify-center">
+              <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cpath d=&quot;M0 0h60v60H0z&quot; fill=&quot;none&quot;/%3E%3Cpath d=&quot;M0 30h60M30 0v60&quot; stroke=&quot;white&quot; stroke-width=&quot;0.5&quot;/%3E%3C/svg%3E');"></div>
+              <div class="relative text-center">
+                <div class="w-16 h-16 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 border border-white/20">
+                  <i data-lucide="store" class="w-8 h-8 text-white"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-white tracking-tight">Mercato</h3>
+                <p class="text-white/60 text-sm mt-1 font-medium">Retail & Wholesale ERP</p>
+              </div>
+            </div>
+            <div class="p-6 md:p-8">
+              <p class="text-neutral-500 leading-relaxed mb-6">Your shop floor and your accountant, in one app. Point of sale, inventory, and full double-entry accounting with automatic VAT, payroll, and tax compliance — all in one app that works even offline.</p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="tag">POS</span>
+                <span class="tag">Inventory</span>
+                <span class="tag">Accounting</span>
+                <span class="tag">VAT</span>
+                <span class="tag">Payroll</span>
+              </div>
+              <div class="flex items-center gap-2 text-accent font-semibold text-sm group-hover:gap-3 transition-all duration-300">
+                Learn more <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ledger Card -->
+          <div class="product-card bg-white rounded-2xl overflow-hidden border border-black/[0.04] cursor-pointer group" onclick="document.getElementById('ledger').scrollIntoView({behavior:'smooth'})">
+            <div class="h-56 overflow-hidden relative bg-gradient-to-br from-ink to-accent-dark flex items-center justify-center">
+              <div class="absolute inset-0 opacity-[0.07]" style="background-image: repeating-linear-gradient(transparent, transparent 24px, rgba(255,255,255,1) 24px, rgba(255,255,255,1) 25px);"></div>
+              <div class="relative text-center">
+                <div class="w-16 h-16 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 border border-white/20">
+                  <i data-lucide="book-open" class="w-8 h-8 text-white"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-white tracking-tight">Ledger</h3>
+                <p class="text-white/60 text-sm mt-1 font-medium">NGO Financial Management</p>
+              </div>
+            </div>
+            <div class="p-6 md:p-8">
+              <p class="text-neutral-500 leading-relaxed mb-6">Every birr accounted for, every donor answered. A complete double-entry finance and payroll platform for Ethiopian NGOs — multi-donor budgets, statutory payroll, and the reports your funders ask for.</p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="tag">Vouchers</span>
+                <span class="tag">Donor Budgets</span>
+                <span class="tag">Payroll</span>
+                <span class="tag">Field Cash</span>
+                <span class="tag">Audit Trail</span>
+              </div>
+              <div class="flex items-center gap-2 text-accent font-semibold text-sm group-hover:gap-3 transition-all duration-300">
+                Learn more <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coming Soon Card -->
+        <div class="mt-6 product-card bg-white/60 backdrop-blur-sm rounded-2xl overflow-hidden border border-dashed border-neutral-300 cursor-default">
+          <div class="p-8 md:p-10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+            <div class="w-14 h-14 rounded-2xl bg-neutral-100 flex items-center justify-center shrink-0">
+              <i data-lucide="plus" class="w-6 h-6 text-neutral-400"></i>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-center md:justify-start gap-3 mb-1">
+                <h3 class="text-xl font-semibold tracking-tight text-neutral-600">Third Product</h3>
+                <span class="tag-brass">Coming Soon</span>
+              </div>
+              <p class="text-neutral-400 text-sm leading-relaxed">We're building something new. Stay tuned for another financial tool designed for the Ethiopian market.</p>
+            </div>
+            <a href="#contact" class="shrink-0 text-sm font-semibold text-accent hover:text-accent-deep transition-colors flex items-center gap-1.5">
+              Notify me <i data-lucide="bell" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MERCATO DEEP DIVE ==================== -->
+    <section id="mercato" class="py-20 md:py-28 bg-white/50 section-hidden">
+      <div class="max-w-[1500px] mx-auto px-4 md:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          <!-- Left: Sticky intro -->
+          <div class="lg:col-span-5 lg:sticky lg:top-24 lg:self-start">
+            <div class="flex items-center gap-2.5 mb-6">
+              <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                <i data-lucide="store" class="w-5 h-5 text-accent"></i>
+              </div>
+              <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-brass">Product 01</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-semibold tracking-[-0.025em] leading-tight mb-5">
+              <span class="text-gradient">Mercato</span><br>
+              Retail & Wholesale ERP
+            </h2>
+            <p class="text-neutral-500 leading-relaxed mb-6">
+              Your shop floor and your accountant, in one app. Ring up a sale, and the books update themselves. No spreadsheets, no separate accounting software, no month-end scramble.
+            </p>
+            <div class="glass-card rounded-xl p-4 mb-6 float-delayed">
+              <div class="flex items-center gap-2 mb-2">
+                <div class="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
+                <span class="text-[11px] font-bold tracking-[0.1em] uppercase text-neutral-500">One-liner</span>
+              </div>
+              <p class="text-sm font-medium text-neutral-700 leading-relaxed">Point of sale and full Ethiopian tax-compliant accounting, in one app.</p>
+            </div>
+            <a href="#contact" class="inline-flex items-center gap-2 bg-accent-dark hover:bg-accent text-white font-semibold text-sm px-6 py-3 rounded-xl transition-all duration-300 hover:scale-[1.03]">
+              <i data-lucide="play-circle" class="w-4 h-4"></i>
+              Request Mercato Demo
+            </a>
+          </div>
+
+          <!-- Right: Features -->
+          <div class="lg:col-span-7">
+            <div class="mb-8">
+              <p class="text-sm font-bold tracking-[0.12em] uppercase text-neutral-400 mb-1">What Mercato handles</p>
+              <div class="h-[2px] w-12 bg-accent rounded-full"></div>
+            </div>
+
+            <div class="space-y-0">
+              <!-- Feature rows -->
+              <div class="ledger-line flex gap-5 py-5 px-3 rounded-lg transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-accent/8 flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="shopping-cart" class="w-4.5 h-4.5 text-accent"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold tracking-tight text-[15px] mb-1">Point of Sale & Inventory</h4>
+                  <p class="text-sm text-neutral-500 leading-relaxed">Quick sales, stock tracking, low-stock alerts, customers and suppliers, printable VAT receipts with TIN.</p>
+                </div>
+              </div>
+
+              <div class="ledger-line flex gap-5 py-5 px-3 rounded-lg transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-accent/8 flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="book-open" class="w-4.5 h-4.5 text-accent"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold tracking-tight text-[15px] mb-1">Double-Entry Accounting</h4>
+                  <p class="text-sm text-neutral-500 leading-relaxed">Automatic chart of accounts, general ledger, and trial balance aligned to IFRS for SMEs. One sale, fully accounted for.</p>
+                </div>
+              </div>
+
+              <div class="ledger-line flex gap-5 py-5 px-3 rounded-lg transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-accent/8 flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="percent" class="w-4.5 h-4.5 text-accent"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold tracking-tight text-[15px] mb-1">VAT</h4>
+                  <p class="text-sm text-neutral-500 leading-relaxed">15% handled automatically, with monthly VAT returns generated straight from your books and ready to export.</p>
+                </div>
+              </div>
+
+              <div class="ledger-line flex gap-5 py-5 px-3 rounded-lg transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-accent/8 flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="users" class="w-4.5 h-4.5 text-accent"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold tracking-tight text-[15px] mb-1">Payroll</h4>
+                  <p class="text-sm text-neutral-500 leading-relaxed">PAYE on the current 2025 brackets, pension (7% / 11%), payslips, and one-click salary and tax remittance.</p>
+                </div>
+              </div>
+
+              <div class="ledger-line flex gap-5 py-5 px-3 rounded-lg transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-accent/8 flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="file-text" class="w-4.5 h-4.5 text-accent"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold tracking-tight text-[15px] mb-1">Withholding Tax</h4>
+                  <p class="text-sm text-neutral-500 leading-relaxed">Applied automatically when you pay suppliers, with certificates recorded.</p>
+                </div>
+              </div>
+
+              <div class="ledger-line flex gap-5 py-5 px-3 rounded-lg transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-accent/8 flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="building" class="w-4.5 h-4.5 text-accent"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold tracking-tight text-[15px] mb-1">Corporate Income Tax</h4>
+                  <p class="text-sm text-neutral-500 leading-relaxed">Year-end CIT, Minimum Alternative Tax, and quarterly advance tax, computed for you.</p>
+                </div>
+              </div>
+
+              <div class="ledger-line flex gap-5 py-5 px-3 rounded-lg transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-accent/8 flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="hard-drive" class="w-4.5 h-4.5 text-accent"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold tracking-tight text-[15px] mb-1">Fixed Assets</h4>
+                  <p class="text-sm text-neutral-500 leading-relaxed">Asset register with both IFRS and Ethiopian tax depreciation.</p>
+                </div>
+              </div>
+
+              <div class="flex gap-5 py-5 px-3 rounded-lg transition-colors">
+                <div class="w-10 h-10 rounded-lg bg-accent/8 flex items-center justify-center shrink-0 mt-0.5">
+                  <i data-lucide="ship" class="w-4.5 h-4.5 text-accent"></i>
+                </div>
+                <div>
+                  <h4 class="font-semibold tracking-tight text-[15px] mb-1">Imports</h4>
+                  <p class="text-sm text-neutral-500 leading-relaxed">Landed-cost capitalisation, recoverable import VAT, and the 3% advance income tax, all in one entry.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ethiopia-specific callout -->
+            <div class="mt-8 bg-accent-dark rounded-2xl p-6 md:p-8 text-white relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-48 h-48 rounded-full" style="background: rgba(100,144,110,0.2); filter: blur(60px);"></div>
+              <div class="relative">
+                <div class="flex items-center gap-2 mb-3">
+                  <i data-lucide="map-pin" class="w-4 h-4 text-accent-light"></i>
+                  <span class="text-[11px] font-bold tracking-[0.12em] uppercase text-accent-light">Built for how Ethiopia actually works</span>
+                </div>
+                <ul class="space-y-2.5 text-sm text-white/80 leading-relaxed">
+                  <li class="flex items-start gap-2.5">
+                    <span class="text-accent mt-0.5">✦</span>
+                    <span>Prices in birr, Ethiopian calendar on screen</span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <span class="text-accent mt-0.5">✦</span>
+                    <span>Telebirr and CBE Birr as payment options</span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <span class="text-accent mt-0.5">✦</span>
+                    <span>Tax rules configured as data — when the law changes, the app keeps up</span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <span class="text-accent mt-0.5">✦</span>
+                    <span>Progressive Web App — installs on any phone, works offline, syncs automatically</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== LEDGER DEEP DIVE ==================== -->
+    <section id="ledger" class="py-20 md:py-28 section-hidden">
+      <div class="max-w-[1500px] mx-auto px-4 md:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+          <!-- Left: Content -->
+          <div class="lg:col-span-7 order-2 lg:order-1">
+            <div class="mb-8">
+              <p class="text-sm font-bold tracking-[0.12em] uppercase text-neutral-400 mb-1">11 integrated modules</p>
+              <div class="h-[2px] w-12 bg-accent rounded-full"></div>
+            </div>
+
+            <!-- Ledger-style feature table -->
+            <div class="border-t-2 border-neutral-800">
+              <div class="ledger-line grid grid-cols-[40px_1.2fr_2fr_auto] md:grid-cols-[48px_1.2fr_2fr_auto] gap-4 md:gap-6 items-center py-4 px-2">
+                <span class="text-[12px] font-semibold text-brass mono">01</span>
+                <span class="font-semibold tracking-tight text-[15px]">Vouchers & Approvals</span>
+                <span class="text-sm text-neutral-500 hidden md:block">Payment, receipt, journal, transfer and payroll vouchers with role-based approval ceilings.</span>
+                <span class="tag shrink-0">Controls</span>
+              </div>
+              <div class="ledger-line grid grid-cols-[40px_1.2fr_2fr_auto] md:grid-cols-[48px_1.2fr_2fr_auto] gap-4 md:gap-6 items-center py-4 px-2">
+                <span class="text-[12px] font-semibold text-brass mono">02</span>
+                <span class="font-semibold tracking-tight text-[15px]">Financial Reports</span>
+                <span class="text-sm text-neutral-500 hidden md:block">Trial balance, balance sheet, income statement, cash flow, budget utilisation, full GL.</span>
+                <span class="tag shrink-0">Reporting</span>
+              </div>
+              <div class="ledger-line grid grid-cols-[40px_1.2fr_2fr_auto] md:grid-cols-[48px_1.2fr_2fr_auto] gap-4 md:gap-6 items-center py-4 px-2">
+                <span class="text-[12px] font-semibold text-brass mono">03</span>
+                <span class="font-semibold tracking-tight text-[15px]">Donor Budgets</span>
+                <span class="text-sm text-neutral-500 hidden md:block">Import budget sheets with phasing; track actuals vs expected-to-date by line.</span>
+                <span class="tag shrink-0">Grants</span>
+              </div>
+              <div class="ledger-line grid grid-cols-[40px_1.2fr_2fr_auto] md:grid-cols-[48px_1.2fr_2fr_auto] gap-4 md:gap-6 items-center py-4 px-2">
+                <span class="text-[12px] font-semibold text-brass mono">04</span>
+                <span class="font-semibold tracking-tight text-[15px]">Payroll & Tax</span>
+                <span class="text-sm text-neutral-500 hidden md:block">Ethiopian PAYE schedules, pension and provident fund, computed as a journal.</span>
+                <span class="tag shrink-0">Payroll</span>
+              </div>
+              <div class="ledger-line grid grid-cols-[40px_1.2fr_2fr_auto] md:grid-cols-[48px_1.2fr_2fr_auto] gap-4 md:gap-6 items-center py-4 px-2">
+                <span class="text-[12px] font-semibold text-brass mono">05</span>
+                <span class="font-semibold tracking-tight text-[15px]">HR & Timesheets</span>
+                <span class="text-sm text-neutral-500 hidden md:block">Employee records, contracts, leave, timesheets allocating cost across projects.</span>
+                <span class="tag shrink-0">People</span>
+              </div>
+              <div class="ledger-line grid grid-cols-[40px_1.2fr_2fr_auto] md:grid-cols-[48px_1.2fr_2fr_auto] gap-4 md:gap-6 items-center py-4 px-2">
+                <span class="text-[12px] font-semibold text-brass mono">06</span>
+                <span class="font-semibold tracking-tight text-[15px]">Imprest Petty Cash</span>
+                <span class="text-sm text-neutral-500 hidden md:block">Separate float per branch, with ceilings, replenishment, and surprise-count control.</span>
+                <span class="tag shrink-0">Field</span>
+              </div>
+              <div class="ledger-line grid grid-cols-[40px_1.2fr_2fr_auto] md:grid-cols-[48px_1.2fr_2fr_auto] gap-4 md:gap-6 items-center py-4 px-2">
+                <span class="text-[12px] font-semibold text-brass mono">07</span>
+                <span class="font-semibold tracking-tight text-[15px]">Bank Reconciliation</span>
+                <span class="text-sm text-neutral-500 hidden md:block">Match any account against an external statement, with auto-matching.</span>
+                <span class="tag shrink-0">Assurance</span>
+              </div>
+              <div class="grid grid-cols-[40px_1.2fr_2fr_auto] md:grid-cols-[48px_1.2fr_2fr_auto] gap-4 md:gap-6 items-center py-4 px-2">
+                <span class="text-[12px] font-semibold text-brass mono">08</span>
+                <span class="font-semibold tracking-tight text-[15px]">Fixed-Asset Register</span>
+                <span class="text-sm text-neutral-500 hidden md:block">Automatic depreciation, net book value, and category reports for notes.</span>
+                <span class="tag shrink-0">Assets</span>
+              </div>
+            </div>
+
+            <!-- Editions -->
+            <div class="mt-12">
+              <h3 class="text-xl font-semibold tracking-tight mb-2">Two editions, same core</h3>
+              <p class="text-sm text-neutral-500 mb-6">Every organisation runs payroll. Not every one needs a full ledger on day one.</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="edition-card bg-white rounded-xl p-6 border border-accent/20 shadow-sm">
+                  <span class="tag-brass mb-3 inline-block">Edition A · Complete</span>
+                  <h4 class="text-lg font-semibold tracking-tight mb-2">Financial Management Suite</h4>
+                  <p class="text-sm text-neutral-500 mb-4 leading-relaxed">The full finance office — for NGOs managing multiple donors and statutory reporting end to end.</p>
+                  <ul class="space-y-2 text-sm text-neutral-600">
+                    <li class="flex items-start gap-2"><span class="text-accent font-bold">=</span> Vouchers, approvals & the general ledger</li>
+                    <li class="flex items-start gap-2"><span class="text-accent font-bold">=</span> Six donor-ready financial reports</li>
+                    <li class="flex items-start gap-2"><span class="text-accent font-bold">=</span> Donor budgets with phasing & versions</li>
+                    <li class="flex items-start gap-2"><span class="text-accent font-bold">=</span> Payroll, HR, petty cash, assets, reconciliation</li>
+                  </ul>
+                  <a href="#contact" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-accent-dark hover:text-accent transition-colors">
+                    Request demo <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                  </a>
+                </div>
+                <div class="edition-card bg-white rounded-xl p-6 border border-black/5">
+                  <span class="tag-brass mb-3 inline-block">Edition B · Focused</span>
+                  <h4 class="text-lg font-semibold tracking-tight mb-2">HR & Payroll System</h4>
+                  <p class="text-sm text-neutral-500 mb-4 leading-relaxed">A standalone Ethiopian HR and payroll product that exports clean journals to any accounting system.</p>
+                  <ul class="space-y-2 text-sm text-neutral-600">
+                    <li class="flex items-start gap-2"><span class="text-accent font-bold">=</span> Employee records & contract history</li>
+                    <li class="flex items-start gap-2"><span class="text-accent font-bold">=</span> Leave entitlements & timesheets</li>
+                    <li class="flex items-start gap-2"><span class="text-accent font-bold">=</span> PAYE, pension & provident-fund payroll</li>
+                    <li class="flex items-start gap-2"><span class="text-accent font-bold">=</span> Salary cost allocation & Excel export</li>
+                  </ul>
+                  <a href="#contact" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-neutral-500 hover:text-neutral-900 transition-colors">
+                    Ask about HR & Payroll <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Sticky intro -->
+          <div class="lg:col-span-5 lg:sticky lg:top-24 lg:self-start order-1 lg:order-2">
+            <div class="flex items-center gap-2.5 mb-6">
+              <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                <i data-lucide="book-open" class="w-5 h-5 text-accent"></i>
+              </div>
+              <span class="text-[11px] font-bold tracking-[0.14em] uppercase text-brass">Product 02</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-semibold tracking-[-0.025em] leading-tight mb-5">
+              <span class="text-gradient">Ledger</span><br>
+              NGO Financial Management
+            </h2>
+            <p class="text-neutral-500 leading-relaxed mb-6">
+              Every birr accounted for. Every donor answered. A complete, double-entry finance and payroll platform built for the realities of Ethiopian non-profits — designed in Addis Ababa, in use today.
+            </p>
+
+            <!-- Origin story card -->
+            <div class="bg-ink rounded-xl p-6 mb-6 relative overflow-hidden">
+              <div class="absolute inset-0 opacity-[0.04]" style="background-image: repeating-linear-gradient(transparent, transparent 28px, rgba(255,255,255,1) 28px, rgba(255,255,255,1) 29px);"></div>
+              <div class="relative">
+                <span class="text-[10px] font-bold tracking-[0.12em] uppercase text-brass">The Origin</span>
+                <p class="text-white/80 text-sm leading-relaxed mt-3">
+                  It began as a Google Sheet that could no longer carry the weight — and became <span class="text-accent-light italic">a finance platform</span>. Built by a finance professional with twenty years of multi-donor grants and Ethiopian statutory compliance.
+                </p>
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+              <div class="bg-white rounded-xl p-4 border border-black/5 text-center">
+                <div class="text-2xl font-bold text-accent-dark mono">11</div>
+                <div class="text-[10px] font-bold tracking-[0.1em] uppercase text-neutral-400 mt-1">Modules</div>
+              </div>
+              <div class="bg-white rounded-xl p-4 border border-black/5 text-center">
+                <div class="text-2xl font-bold text-accent-dark mono">6</div>
+                <div class="text-[10px] font-bold tracking-[0.1em] uppercase text-neutral-400 mt-1">Donor Reports</div>
+              </div>
+              <div class="bg-white rounded-xl p-4 border border-black/5 text-center">
+                <div class="text-lg font-bold text-accent-dark">PAYE</div>
+                <div class="text-[10px] font-bold tracking-[0.1em] uppercase text-neutral-400 mt-1">Payroll Engine</div>
+              </div>
+              <div class="bg-white rounded-xl p-4 border border-black/5 text-center">
+                <div class="text-lg font-bold text-accent-dark">∞/branch</div>
+                <div class="text-[10px] font-bold tracking-[0.1em] uppercase text-neutral-400 mt-1">Field Cash</div>
+              </div>
+            </div>
+
+            <a href="#contact" class="inline-flex items-center gap-2 bg-accent-dark hover:bg-accent text-white font-semibold text-sm px-6 py-3 rounded-xl transition-all duration-300 hover:scale-[1.03]">
+              <i data-lucide="play-circle" class="w-4 h-4"></i>
+              Request Ledger Demo
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== WHY US ==================== -->
+    <section id="why" class="py-20 md:py-28 bg-white/50 section-hidden">
+      <div class="max-w-[1500px] mx-auto px-4 md:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+          <span class="text-[11px] font-bold tracking-[0.15em] uppercase text-brass mb-4 block">Why FinApp Studio</span>
+          <h2 class="text-3xl md:text-[2.75rem] font-semibold tracking-[-0.025em] leading-tight">Made for here,<br><span class="text-gradient">not adapted to here</span></h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div class="bg-white rounded-2xl p-6 border border-black/5 edition-card">
+            <div class="w-11 h-11 rounded-xl bg-accent/8 flex items-center justify-center mb-4">
+              <i data-lucide="flag" class="w-5 h-5 text-accent"></i>
+            </div>
+            <h3 class="font-semibold tracking-tight text-[15px] mb-2">Ethiopian by Design</h3>
+            <p class="text-sm text-neutral-500 leading-relaxed">PAYE schedules, pension, the Labour Proclamation's leave rules, Ethiopian calendar, and bilingual interfaces — built in, not bolted on.</p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-black/5 edition-card">
+            <div class="w-11 h-11 rounded-xl bg-accent/8 flex items-center justify-center mb-4">
+              <i data-lucide="wifi-off" class="w-5 h-5 text-accent"></i>
+            </div>
+            <h3 class="font-semibold tracking-tight text-[15px] mb-2">Built for the Field</h3>
+            <p class="text-sm text-neutral-500 leading-relaxed">Offline-first, so branch offices keep working through outages and sync when the connection returns. Real cash controls for every office.</p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-black/5 edition-card">
+            <div class="w-11 h-11 rounded-xl bg-accent/8 flex items-center justify-center mb-4">
+              <i data-lucide="shield-check" class="w-5 h-5 text-accent"></i>
+            </div>
+            <h3 class="font-semibold tracking-tight text-[15px] mb-2">Answerable to Donors</h3>
+            <p class="text-sm text-neutral-500 leading-relaxed">Immutable posting, complete audit trail, budget-vs-actual by donor and project — the evidence your funders and auditors ask for first.</p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-black/5 edition-card">
+            <div class="w-11 h-11 rounded-xl bg-accent/8 flex items-center justify-center mb-4">
+              <i data-lucide="lock" class="w-5 h-5 text-accent"></i>
+            </div>
+            <h3 class="font-semibold tracking-tight text-[15px] mb-2">Yours to Control</h3>
+            <p class="text-sm text-neutral-500 leading-relaxed">Role-based access, strong authentication, and data protection mapped to Proclamation 1321/2024 — with a clear path to full compliance.</p>
+          </div>
+        </div>
+
+        <!-- Additional trust row -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5">
+          <div class="bg-white rounded-2xl p-6 border border-black/5 edition-card">
+            <div class="w-11 h-11 rounded-xl bg-accent/8 flex items-center justify-center mb-4">
+              <i data-lucide="smartphone" class="w-5 h-5 text-accent"></i>
+            </div>
+            <h3 class="font-semibold tracking-tight text-[15px] mb-2">Progressive Web App</h3>
+            <p class="text-sm text-neutral-500 leading-relaxed">Installs on any phone or computer. No app store needed. Works offline, syncs automatically.</p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-black/5 edition-card">
+            <div class="w-11 h-11 rounded-xl bg-accent/8 flex items-center justify-center mb-4">
+              <i data-lucide="banknote" class="w-5 h-5 text-accent"></i>
+            </div>
+            <h3 class="font-semibold tracking-tight text-[15px] mb-2">Local Payments</h3>
+            <p class="text-sm text-neutral-500 leading-relaxed">Telebirr, CBE Birr, and cash — the payment methods your customers actually use, built into the flow.</p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-black/5 edition-card">
+            <div class="w-11 h-11 rounded-xl bg-accent/8 flex items-center justify-center mb-4">
+              <i data-lucide="scale" class="w-5 h-5 text-accent"></i>
+            </div>
+            <h3 class="font-semibold tracking-tight text-[15px] mb-2">Tax Rules as Data</h3>
+            <p class="text-sm text-neutral-500 leading-relaxed">When the law changes, the app keeps up. Rates and brackets are configurable, not hardcoded.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== CONTACT / CTA ==================== -->
+    <section id="contact" class="py-24 md:py-32 section-hidden">
+      <div class="max-w-[1500px] mx-auto px-4 md:px-8">
+        <div class="glass-card rounded-3xl p-8 md:p-16 text-center relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-[350px] h-[350px] rounded-full" style="background: rgba(134,239,172,0.15); filter: blur(90px);"></div>
+          <div class="absolute bottom-0 left-0 w-[250px] h-[250px] rounded-full" style="background: rgba(253,224,71,0.1); filter: blur(70px);"></div>
+          <div class="relative">
+            <span class="text-[11px] font-bold tracking-[0.15em] uppercase text-brass mb-5 block">Get Started</span>
+            <h2 class="text-3xl md:text-5xl font-semibold tracking-[-0.025em] leading-tight mb-5 max-w-3xl mx-auto">See your own ledger,<br><span class="text-gradient">balanced, in a single afternoon</span></h2>
+            <p class="text-neutral-500 text-lg max-w-xl mx-auto mb-10 leading-relaxed">Request a walkthrough with your own chart of accounts and a recent budget. We'll show you the voucher-to-report flow end to end — and where it would save your team the most time.</p>
+
+            <!-- Contact form -->
+            <form id="contact-form" class="max-w-lg mx-auto text-left space-y-4 mb-8" onsubmit="handleFormSubmit(event)">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[11px] font-bold tracking-[0.1em] uppercase text-neutral-400 mb-1.5">Name *</label>
+                  <input type="text" required placeholder="Your name" class="w-full px-4 py-3 rounded-xl bg-white/80 border border-black/8 text-sm outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/10 transition-all placeholder:text-neutral-300">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold tracking-[0.1em] uppercase text-neutral-400 mb-1.5">Organisation</label>
+                  <input type="text" placeholder="Company or NGO" class="w-full px-4 py-3 rounded-xl bg-white/80 border border-black/8 text-sm outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/10 transition-all placeholder:text-neutral-300">
+                </div>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold tracking-[0.1em] uppercase text-neutral-400 mb-1.5">Email *</label>
+                <input type="email" required placeholder="you@organisation.com" class="w-full px-4 py-3 rounded-xl bg-white/80 border border-black/8 text-sm outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/10 transition-all placeholder:text-neutral-300">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold tracking-[0.1em] uppercase text-neutral-400 mb-1.5">I'm interested in</label>
+                <select class="w-full px-4 py-3 rounded-xl bg-white/80 border border-black/8 text-sm outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/10 transition-all text-neutral-600">
+                  <option value="">Select a product…</option>
+                  <option value="mercato">Mercato — Retail & Wholesale ERP</option>
+                  <option value="ledger-full">Ledger — Full Financial Management Suite</option>
+                  <option value="ledger-hr">Ledger — HR & Payroll Only</option>
+                  <option value="both">Both products</option>
+                  <option value="other">Something else / Not sure yet</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold tracking-[0.1em] uppercase text-neutral-400 mb-1.5">Message</label>
+                <textarea rows="3" placeholder="Tell us about your needs…" class="w-full px-4 py-3 rounded-xl bg-white/80 border border-black/8 text-sm outline-none focus:border-accent/40 focus:ring-2 focus:ring-accent/10 transition-all placeholder:text-neutral-300 resize-none"></textarea>
+              </div>
+              <button type="submit" class="w-full flex items-center justify-center gap-2 bg-accent-dark hover:bg-accent text-white font-semibold text-sm px-6 py-3.5 rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-accent-dark/20">
+                <i data-lucide="send" class="w-4 h-4"></i>
+                Request a Demo
+              </button>
+            </form>
+
+            <!-- Success message (hidden by default) -->
+            <div id="form-success" class="hidden max-w-lg mx-auto bg-accent/10 border border-accent/20 rounded-xl p-6 text-center">
+              <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-3">
+                <i data-lucide="check" class="w-6 h-6 text-accent"></i>
+              </div>
+              <h3 class="font-semibold tracking-tight mb-1">Request received</h3>
+              <p class="text-sm text-neutral-500">We'll be in touch within one business day. Thank you!</p>
+            </div>
+
+            <p class="text-xs text-neutral-400 mt-6">Built in Addis Ababa, Ethiopia · For the organisations that account to everyone.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-black/5 bg-white/40">
+    <div class="max-w-[1500px] mx-auto px-4 md:px-8 py-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-6 h-6 rounded-md bg-accent-dark flex items-center justify-center">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="text-sm text-neutral-500">© 2025 FinApp Studio. All rights reserved.</span>
+        </div>
+        <div class="flex items-center gap-6 text-sm text-neutral-500">
+          <a href="#products" class="hover:text-neutral-800 transition-colors">Products</a>
+          <a href="#why" class="hover:text-neutral-800 transition-colors">Why Us</a>
+          <a href="#contact" class="hover:text-neutral-800 transition-colors">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-20 right-4 z-[100] flex flex-col gap-3"></div>
+
+  <script>
+    // Mobile menu
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+    function closeMobileMenu() {
+      document.getElementById('mobile-menu').classList.add('hidden');
+    }
+
+    // Form submission
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      document.getElementById('contact-form').classList.add('hidden');
+      document.getElementById('form-success').classList.remove('hidden');
+      showToast('Demo request sent! We\'ll be in touch soon.', 'success');
+      lucide.createIcons();
+    }
+
+    // Toast
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const colors = {
+        success: 'bg-green-50 border-green-200 text-green-800',
+        warning: 'bg-amber-50 border-amber-200 text-amber-800',
+        info: 'bg-blue-50 border-blue-200 text-blue-800',
+      };
+      const icons = { success: 'check-circle', warning: 'alert-circle', info: 'info' };
+      const toast = document.createElement('div');
+      toast.className = `flex items-center gap-3 px-5 py-3 rounded-xl border shadow-lg text-sm font-medium ${colors[type]}`;
+      toast.style.animation = 'fadeInUp 0.4s ease forwards';
+      toast.innerHTML = `<i data-lucide="${icons[type]}" class="w-4 h-4 shrink-0"></i>${message}`;
+      container.appendChild(toast);
+      lucide.createIcons();
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(20px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // Section observer
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('section-hidden');
+          entry.target.classList.add('section-visible');
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.section-hidden').forEach(el => sectionObserver.observe(el));
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Init icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
